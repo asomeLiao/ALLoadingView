@@ -56,7 +56,7 @@ static NSString * const kALAnimationKey = @"kALAnimationKey";
 - (void)endAnimationWithResult:(ALLoadingViewResultType )result {
     [self.layer removeAllAnimations];
     [self.asmLayer removeAllAnimations];
-    
+    [self.asmContentLayer removeAllAnimations];
     switch (result) {
         case ALLoadingViewResultTypeError:
             self.asmLayer.strokeColor = self.errorColor.CGColor;
