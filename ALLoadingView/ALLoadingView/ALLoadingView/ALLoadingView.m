@@ -7,6 +7,8 @@
 //  Copyright © 2017年 asm. All rights reserved.
 //
 
+
+
 #import "ALLoadingView.h"
 
 static NSString * const kALAnimationKey = @"kALAnimationKey";
@@ -14,6 +16,7 @@ static NSString * const kALAnimationKey = @"kALAnimationKey";
 @interface ALLoadingView ()<CAAnimationDelegate>
 
 @property(nonatomic, strong) CAShapeLayer *asmLayer;
+@property(nonatomic, strong) CAShapeLayer *asmContentLayer;
 
 @end
 
@@ -34,10 +37,10 @@ static NSString * const kALAnimationKey = @"kALAnimationKey";
 }
 
 - (void) setup {
-    self.loadingColor = [UIColor orangeColor];
-    self.successColor = [UIColor greenColor];
-    self.errorColor = [UIColor redColor];
-    self.exclamationColor = [UIColor purpleColor];
+    self.loadingColor = [UIColor colorWithRed:0x46/255.0 green:0x4d/255.0 blue:0x65/255.0 alpha:1.0];
+    self.successColor = [UIColor colorWithRed:0x32/255.0 green:0xa9/255.0 blue:0x82/255.0 alpha:1.0];
+    self.errorColor = [UIColor colorWithRed:0xff/255.0 green:0x61/255.0 blue:0x51/255.0 alpha:1.0];
+    self.exclamationColor = self.errorColor;
     self.lineWidth = 6;
     self.radius  = 40;
 }
@@ -76,45 +79,61 @@ static NSString * const kALAnimationKey = @"kALAnimationKey";
     }
 }
 
+- (CAShapeLayer *)asmLayer {
+    if (_asmLayer == nil) {
+        
+        _asmLayer = [CAShapeLayer layer];
+        _asmLayer.frame = CGRectMake(0, 0, self.radius * 2 + self.lineWidth, self.radius * 2 + self.lineWidth);
+        
+        UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds)) radius:_asmLayer.bounds.size.width/2 startAngle:0 endAngle:2*M_PI clockwise:YES];
+        
+        //路径
+        _asmLayer.path = path.CGPath;
+        //填充色
+        _asmLayer.fillColor = [UIColor clearColor].CGColor;
+        // 设置线的颜色
+        _asmLayer.strokeColor = self.loadingColor.CGColor;
+        //线的宽度
+        _asmLayer.lineWidth = self.lineWidth;
+        [self.layer addSublayer:_asmLayer];
+    }
+    return _asmLayer;
+}
+
+- (CAShapeLayer *)asmContentLayer {
+    if (_asmContentLayer == nil) {
+        _asmContentLayer = [CAShapeLayer layer];
+        _asmContentLayer.frame = self.bounds;
+        [self.layer addSublayer:_asmContentLayer];
+    }
+    return _asmContentLayer;
+}
+
 #pragma mark - reset
 - (void)reset {
     
-    [self.layer.sublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+    [self.asmContentLayer removeAllAnimations];
+    [self.asmContentLayer removeFromSuperlayer];
+    _asmContentLayer = nil;
     [self.layer removeAllAnimations];
 }
 
 - (void) loading {
-    CAShapeLayer * shapelayer = [CAShapeLayer layer];
-    self.asmLayer = shapelayer;
-    self.asmLayer.frame = CGRectMake(0, 0, self.radius * 2 + self.lineWidth, self.radius * 2 + self.lineWidth);
-    
-    UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds)) radius:self.asmLayer.bounds.size.width/2 startAngle:0 endAngle:2*M_PI clockwise:YES];
-    
-    //路径
-    shapelayer.path = path.CGPath;
-    //填充色
-    shapelayer.fillColor = [UIColor clearColor].CGColor;
-    // 设置线的颜色
-    shapelayer.strokeColor = self.loadingColor.CGColor;
-    //线的宽度
-    shapelayer.lineWidth = self.lineWidth;
-    [self.layer addSublayer:shapelayer];
     
     CABasicAnimation * anima = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     anima.fromValue = [NSNumber numberWithFloat:0.f];
     anima.toValue = [NSNumber numberWithFloat:1.f];
     anima.duration = 2.0f;
     anima.repeatCount = MAXFLOAT;
-    anima.timingFunction = UIViewAnimationOptionCurveEaseInOut;
     anima.autoreverses = YES;
     anima.removedOnCompletion = NO;
-    [shapelayer addAnimation:anima forKey:@"strokeEndAniamtion"];
+    self.asmLayer.strokeColor = self.loadingColor.CGColor;
+    [self.asmLayer addAnimation:anima forKey:@"strokeEndAniamtion"];
     
     CABasicAnimation *anima3 = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     anima3.toValue = [NSNumber numberWithFloat:-M_PI*2];
     anima3.duration = 1.0f;
     anima3.repeatCount = MAXFLOAT;
-    anima3.timingFunction = UIViewAnimationOptionCurveEaseInOut;
     [self.layer addAnimation:anima3 forKey:@"rotaionAniamtion"];
     
 }
@@ -123,11 +142,9 @@ static NSString * const kALAnimationKey = @"kALAnimationKey";
 
 // 对号出现
 - (void)success {
-    
-    CAShapeLayer *layer = [CAShapeLayer layer];
-    layer.frame = self.bounds;
-    [self.layer addSublayer:layer];
-    
+
+    CAShapeLayer *layer = self.asmContentLayer;
+
     UIBezierPath *path = [UIBezierPath bezierPath];
     CGPoint centerPoint = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     CGPoint firstPoint = centerPoint;
@@ -141,16 +158,16 @@ static NSString * const kALAnimationKey = @"kALAnimationKey";
     thirdPoint.x += self.radius / 2;
     thirdPoint.y -= self.radius / 2;
     [path addLineToPoint:thirdPoint];
-    
+
     layer.path = path.CGPath;
     layer.lineWidth = self.lineWidth;
     layer.strokeColor = self.successColor.CGColor;
     layer.fillColor = nil;
-    
+
     // end status
     CGFloat strokeEnd = 1;
     layer.strokeEnd = strokeEnd;
-    
+
     // animation
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     animation.duration = 1.0;
@@ -161,10 +178,7 @@ static NSString * const kALAnimationKey = @"kALAnimationKey";
 #pragma mark - error
 
 - (void) error {
-    CAShapeLayer *layer = [CAShapeLayer layer];
-    layer.frame = self.bounds;
-    [self.layer addSublayer:layer];
-    
+    CAShapeLayer *layer = self.asmContentLayer;
     
     CGPoint centerPoint = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     UIBezierPath *path = [UIBezierPath bezierPath];
@@ -177,7 +191,7 @@ static NSString * const kALAnimationKey = @"kALAnimationKey";
     point2.x += self.radius / 2;
     point2.y += self.radius / 2;
     [path addLineToPoint:point2];
-    
+
     UIBezierPath *path2 = [UIBezierPath bezierPath];
     CGPoint point4 = centerPoint;
     point4.x += self.radius / 2;
@@ -210,99 +224,50 @@ static NSString * const kALAnimationKey = @"kALAnimationKey";
 }
 
 #pragma mark - exclamationMark
-- (void)exclamationMark {
-    
-    [self markUp];
-    [self markDown];
-}
 
-// 叹号上半部分出现
-- (void)markUp {
-    CAShapeLayer *layer = [CAShapeLayer layer];
-    layer.frame = self.bounds;
-    [self.layer addSublayer: layer];
+- (void)exclamationMark {
+    CAShapeLayer *layer = self.asmContentLayer;
     
     CGFloat partLength = self.radius * 2 / 8;
     CGFloat pathPartCount = 5;
     CGFloat visualPathPartCount = 4;
     UIBezierPath *path = [UIBezierPath bezierPath];
-    CGFloat originY = CGRectGetMidY(self.bounds) - self.radius;
+    CGFloat originY = CGRectGetMidY(self.bounds) - self.radius+pathPartCount;
     CGFloat destY = originY + partLength * pathPartCount;
     [path moveToPoint:CGPointMake(CGRectGetMidX(self.bounds), originY)];
     [path addLineToPoint:CGPointMake(CGRectGetMidX(self.bounds), destY)];
+    
+    //❗️下部分
+    CGFloat partLength2 = self.radius * 2 / 8;
+    CGFloat pathPartCount2 = 1;
+    UIBezierPath *path2 = [UIBezierPath bezierPath];
+    CGFloat originY2 = CGRectGetMidY(self.bounds) + self.radius-partLength2 * pathPartCount2;
+    CGFloat destY2 = originY2 - partLength2 * pathPartCount2;
+    [path2 moveToPoint:CGPointMake(CGRectGetMidX(self.bounds), destY2)];
+    [path2 addLineToPoint:CGPointMake(CGRectGetMidX(self.bounds), originY2)];
+    layer.fillMode = @"forwards";
+    [path appendPath:path2];
+    
     layer.path = path.CGPath;
     layer.lineWidth = self.lineWidth;
     layer.strokeColor = self.exclamationColor.CGColor;
     layer.fillColor = nil;
-    
     // end status
-    CGFloat strokeStart = (pathPartCount - visualPathPartCount ) / pathPartCount;
     CGFloat strokeEnd = 1.0;
-    layer.strokeStart = strokeStart;
-    layer.strokeEnd = strokeEnd;
-    
+
     // animation
-    CABasicAnimation *startAnimation = [CABasicAnimation animationWithKeyPath:@"strokeStart"];
-    startAnimation.fromValue = @0;
-    startAnimation.toValue = @(strokeStart);
-    
-    CABasicAnimation *endAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    endAnimation.fromValue = @0;
-    endAnimation.toValue = @(strokeEnd);
-    
-    CAAnimationGroup *anima = [CAAnimationGroup animation];
-    anima.animations = @[startAnimation, endAnimation];
-    anima.duration = 0.6;
-    anima.delegate = self;
-    [anima setValue:@"needShake" forKey:kALAnimationKey];
-    
-    [layer addAnimation:anima forKey:nil];
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+    animation.duration = 0.5;
+    animation.fromValue = @0;
+    animation.toValue = @(strokeEnd);
+    [animation setValue:@"needShake" forKey:kALAnimationKey];
+    animation.delegate = self;
+    [layer addAnimation:animation forKey:nil];
+
+
 }
 
-// 叹号下半部分出现
-- (void)markDown {
-    CAShapeLayer *layer = [CAShapeLayer layer];
-    layer.frame = self.bounds;
-    [self.layer addSublayer: layer];
-    
-    CGFloat partLength = self.radius * 2 / 8;
-    CGFloat pathPartCount = 2;
-    CGFloat visualPathPartCount = 1;
-    
-    layer.frame = self.bounds;
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    CGFloat originY = CGRectGetMidY(self.bounds) + self.radius;
-    CGFloat destY = originY - partLength * pathPartCount;
-    [path moveToPoint:CGPointMake(CGRectGetMidX(self.bounds), originY)];
-    [path addLineToPoint:CGPointMake(CGRectGetMidX(self.bounds), destY)];
-    layer.path = path.CGPath;
-    layer.lineWidth = self.lineWidth;
-    layer.strokeColor = self.exclamationColor.CGColor;
-    layer.fillColor = nil;
-    
-    // end status
-    CGFloat strokeStart = (pathPartCount - visualPathPartCount ) / pathPartCount;
-    CGFloat strokeEnd = 1.0;
-    layer.strokeStart = strokeStart;
-    layer.strokeEnd = strokeEnd;
-    
-    // animation
-    CABasicAnimation *startAnimation = [CABasicAnimation animationWithKeyPath:@"strokeStart"];
-    startAnimation.fromValue = @0;
-    startAnimation.toValue = @(strokeStart);
-    
-    CABasicAnimation *endAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    endAnimation.fromValue = @0;
-    endAnimation.toValue = @(strokeEnd);
-    
-    CAAnimationGroup *anima = [CAAnimationGroup animation];
-    anima.animations = @[startAnimation, endAnimation];
-    anima.duration = 0.6;
-    
-    [layer addAnimation:anima forKey:nil];
-}
-
-#pragma mark - step7 fail
+#pragma mark - shake
 - (void)shake {
     CABasicAnimation *anima = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     anima.fromValue = @(-M_PI / 12);
@@ -313,7 +278,7 @@ static NSString * const kALAnimationKey = @"kALAnimationKey";
     [self.layer addAnimation:anima forKey:nil];
 }
 
-#pragma mark - animation step stop
+#pragma mark - animation delegate
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     if ([[anim valueForKey:kALAnimationKey] isEqualToString:@"needShake"]) {
         [self shake];
@@ -321,4 +286,5 @@ static NSString * const kALAnimationKey = @"kALAnimationKey";
 }
 
 @end
+
 
