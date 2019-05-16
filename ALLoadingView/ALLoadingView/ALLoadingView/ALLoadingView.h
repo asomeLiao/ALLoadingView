@@ -27,4 +27,6 @@ typedef enum : NSUInteger {
 
 - (void) start;
 - (void)endAnimationWithResult:(ALLoadingViewResultType )result;
+
+
 @end

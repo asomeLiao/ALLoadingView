@@ -8,7 +8,12 @@
 
 #import "ViewController.h"
 #import "ALLoadingView.h"
+#import "ALTouchView.h"
+#import "ALAudioWave.h"
 @interface ViewController ()
+{
+    UIView *_sview;
+}
 @property(nonatomic, weak) IBOutlet ALLoadingView *lview;
 @end
 
@@ -27,7 +32,15 @@
     }else if ([title containsString:@"error"]) {
         [self.lview endAnimationWithResult:ALLoadingViewResultTypeError];
     }else if ([title containsString:@"Mark"]) {
-        [self.lview endAnimationWithResult:ALLoadingViewResultTypeExclamationMark];
+//        [self.lview endAnimationWithResult:ALLoadingViewResultTypeExclamationMark];
+        if (_sview) {
+
+            return;
+        }
+        ALAudioWave *view = [[ALAudioWave alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+        [view start];
+        _sview = view;
+        [self.view addSubview:view];
     }
 }
 

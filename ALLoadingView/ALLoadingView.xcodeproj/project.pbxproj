@@ -16,6 +16,10 @@
 		C142BDAC1FBD8628000FC6FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C142BDAB1FBD8628000FC6FA /* main.m */; };
 		C142BDB61FBD8629000FC6FA /* ALLoadingViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C142BDB51FBD8629000FC6FA /* ALLoadingViewTests.m */; };
 		C142BDC51FBD91D5000FC6FA /* ALLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C142BDC31FBD91D5000FC6FA /* ALLoadingView.m */; };
+		C1AC5519208EC9800097A507 /* ALTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = C1AC5518208EC9800097A507 /* ALTouchView.m */; };
+		C1AC551C208ECD140097A507 /* ALAudioWave.m in Sources */ = {isa = PBXBuildFile; fileRef = C1AC551B208ECD140097A507 /* ALAudioWave.m */; };
+		C1AC551F209032290097A507 /* ALViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C1AC551E209032290097A507 /* ALViewController.m */; };
+		C1AC5521209032390097A507 /* ALViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C1AC5520209032390097A507 /* ALViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +49,13 @@
 		C142BDB71FBD8629000FC6FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C142BDC31FBD91D5000FC6FA /* ALLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALLoadingView.m; sourceTree = "<group>"; };
 		C142BDC41FBD91D5000FC6FA /* ALLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALLoadingView.h; sourceTree = "<group>"; };
+		C1AC5517208EC9800097A507 /* ALTouchView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALTouchView.h; sourceTree = "<group>"; };
+		C1AC5518208EC9800097A507 /* ALTouchView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALTouchView.m; sourceTree = "<group>"; };
+		C1AC551A208ECD140097A507 /* ALAudioWave.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALAudioWave.h; sourceTree = "<group>"; };
+		C1AC551B208ECD140097A507 /* ALAudioWave.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALAudioWave.m; sourceTree = "<group>"; };
+		C1AC551D209032290097A507 /* ALViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALViewController.h; sourceTree = "<group>"; };
+		C1AC551E209032290097A507 /* ALViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALViewController.m; sourceTree = "<group>"; };
+		C1AC5520209032390097A507 /* ALViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ALViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +101,9 @@
 				C142BD9A1FBD8628000FC6FA /* AppDelegate.m */,
 				C142BD9C1FBD8628000FC6FA /* ViewController.h */,
 				C142BD9D1FBD8628000FC6FA /* ViewController.m */,
+				C1AC551D209032290097A507 /* ALViewController.h */,
+				C1AC551E209032290097A507 /* ALViewController.m */,
+				C1AC5520209032390097A507 /* ALViewController.xib */,
 				C142BDC01FBD8717000FC6FA /* ALLoadingView */,
 				C142BD9F1FBD8628000FC6FA /* Main.storyboard */,
 				C142BDA51FBD8628000FC6FA /* Assets.xcassets */,
@@ -115,6 +129,10 @@
 			children = (
 				C142BDC41FBD91D5000FC6FA /* ALLoadingView.h */,
 				C142BDC31FBD91D5000FC6FA /* ALLoadingView.m */,
+				C1AC5517208EC9800097A507 /* ALTouchView.h */,
+				C1AC5518208EC9800097A507 /* ALTouchView.m */,
+				C1AC551A208ECD140097A507 /* ALAudioWave.h */,
+				C1AC551B208ECD140097A507 /* ALAudioWave.m */,
 			);
 			path = ALLoadingView;
 			sourceTree = "<group>";
@@ -202,6 +220,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C142BDA91FBD8628000FC6FA /* LaunchScreen.storyboard in Resources */,
+				C1AC5521209032390097A507 /* ALViewController.xib in Resources */,
 				C142BDA61FBD8628000FC6FA /* Assets.xcassets in Resources */,
 				C142BDA11FBD8628000FC6FA /* Main.storyboard in Resources */,
 			);
@@ -222,9 +241,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C142BD9E1FBD8628000FC6FA /* ViewController.m in Sources */,
+				C1AC551F209032290097A507 /* ALViewController.m in Sources */,
 				C142BDA41FBD8628000FC6FA /* ALLoadingView.xcdatamodeld in Sources */,
 				C142BDAC1FBD8628000FC6FA /* main.m in Sources */,
+				C1AC5519208EC9800097A507 /* ALTouchView.m in Sources */,
 				C142BD9B1FBD8628000FC6FA /* AppDelegate.m in Sources */,
+				C1AC551C208ECD140097A507 /* ALAudioWave.m in Sources */,
 				C142BDC51FBD91D5000FC6FA /* ALLoadingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -375,12 +397,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4AQATEQGY4;
+				DEVELOPMENT_TEAM = 8K32ADYVFZ;
 				INFOPLIST_FILE = ALLoadingView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.LDSSmartHome.ALLoadingView;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lds.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -389,12 +413,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4AQATEQGY4;
+				DEVELOPMENT_TEAM = 8K32ADYVFZ;
 				INFOPLIST_FILE = ALLoadingView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.LDSSmartHome.ALLoadingView;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lds.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
